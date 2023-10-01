@@ -1,11 +1,13 @@
 import express, {Request, Response} from "express";
-import User from './model/User'
+import Ocorrencia from './model/Ocorrencia'
 const app = express();
 app.use(express.json())
+import routes from './routes/index';
+app.use(routes)
 
 
 app.get('/', (req: Request, res: Response)=>{
-  res.send(User.findAll())
+  res.send(Ocorrencia.findAll())
 })
 
 
