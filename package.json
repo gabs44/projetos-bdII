@@ -10,15 +10,18 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.8.0",
+    "@types/uuid": "^9.0.4",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@types/express": "^4.17.18",
+    "@types/geojson": "^7946.0.11",
     "express": "^4.18.2",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.33.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.1"
   }
 }

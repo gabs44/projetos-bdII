@@ -1,9 +1,11 @@
 import express, {Request, Response} from "express";
+import User from './model/User'
 const app = express();
 app.use(express.json())
 
+
 app.get('/', (req: Request, res: Response)=>{
-  res.send('olá')
+  res.send(User.findAll())
 })
 
 
