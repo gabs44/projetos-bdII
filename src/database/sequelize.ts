@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('projeto01', 'postgis', 'postgis', {
   host: 'localhost',
@@ -17,6 +17,6 @@ async function conectar(){
 
 conectar();
 
-module.exports = sequelize;
+export default sequelize;
 
 
