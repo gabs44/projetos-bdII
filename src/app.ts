@@ -1,14 +1,10 @@
-import express, {Request, Response} from "express";
-import Ocorrencia from './model/Ocorrencia'
-const app = express();
-app.use(express.json())
+import express from "express";
+import cors from 'cors';
 import routes from './routes/index';
+const app = express();
+app.use(cors());
+app.use(express.json())
 app.use(routes)
-
-
-app.get('/', (req: Request, res: Response)=>{
-  res.send(Ocorrencia.findAll())
-})
 
 
 app.listen(4444, ()=>{

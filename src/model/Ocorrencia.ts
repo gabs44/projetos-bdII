@@ -6,6 +6,7 @@ import IOcorrencia from "../dto/IOcorrencia";
 
 
 class Ocorrencia extends Model implements IOcorrencia {
+  declare titulo: string;
   declare id: UUID;
   declare tipo: string;
   declare data: Date;
@@ -18,6 +19,10 @@ Ocorrencia.init(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+    },
+    titulo: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     tipo: {
       type: DataTypes.STRING,

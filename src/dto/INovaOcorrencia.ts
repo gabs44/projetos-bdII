@@ -1,5 +1,6 @@
 
 interface INovaOcorrencia {
+  titulo: string;
   tipo: string;
   data: Date;
   hora: string;

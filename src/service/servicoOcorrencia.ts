@@ -3,7 +3,6 @@ import Ocorrencia from '../model/Ocorrencia';
 import { Point } from 'geojson';
 import IOcorrencia from '../dto/IOcorrencia';
 import INovaOcorrencia from '../dto/INovaOcorrencia';
-import { v4 } from 'uuid';
 
 export default {
   listar: async function():Promise<IOcorrencia[]>{
@@ -24,6 +23,7 @@ export default {
       const novoId: UUID = randomUUID()
       const ocorrencia = Ocorrencia.build({
         id: novoId,
+        titulo: novaOcorrencia.titulo,
         tipo: novaOcorrencia.tipo,
         data: novaOcorrencia.data,
         hora: novaOcorrencia.hora,
