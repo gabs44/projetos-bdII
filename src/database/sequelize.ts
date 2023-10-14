@@ -1,9 +1,9 @@
 import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('projeto01', 'postgis', 'postgis', {
-  host: 'localhost',
+  host: 'banco',
   dialect: 'postgres',
-  port: 5433
+  port: 5432
 });
 
 async function conectar(){
