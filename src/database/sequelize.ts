@@ -1,9 +1,10 @@
+require('dotenv').config();
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('projeto01', 'postgis', 'postgis', {
-  host: 'banco',
+const sequelize = new Sequelize(process.env.PG_DATABASE as string, process.env.PG_USER as string, process.env.PG_PASSWORD as string, {
+  host: process.env.PG_HOST as string,
   dialect: 'postgres',
-  port: 5432
+  port: parseInt(process.env.PG_PORT as string)
 });
 
 async function conectar(){
