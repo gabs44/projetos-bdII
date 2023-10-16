@@ -1,8 +1,8 @@
 import { UUID, randomUUID } from 'crypto';
 import Ocorrencia from '../model/Ocorrencia';
 import { Point } from 'geojson';
-import IOcorrencia from '../dto/IOcorrencia';
-import INovaOcorrencia from '../dto/INovaOcorrencia';
+import IOcorrencia from '../interfaces/IOcorrencia';
+import INovaOcorrencia from '../interfaces/INovaOcorrencia';
 
 export default {
   listar: async function():Promise<IOcorrencia[]>{

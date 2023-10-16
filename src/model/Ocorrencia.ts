@@ -2,7 +2,7 @@ import { UUID } from "crypto";
 import sequelize from "../database/sequelize";
 import { DataTypes, Model } from "sequelize";
 import { Point } from "geojson";
-import IOcorrencia from "../dto/IOcorrencia";
+import IOcorrencia from "../interfaces/IOcorrencia";
 
 
 class Ocorrencia extends Model implements IOcorrencia {
