@@ -4,7 +4,7 @@
 - [Maria Clara](https://github.com/marysclair)
 ## Primeiro projeto
 
-### Esse projeto foi desenvolvido com o objetivo de criar uma aplicação para persistir e listar (ou buscar) dados de ocorrências policiais.
+### O projeto foi desenvolvido com o objetivo de criar uma aplicação para persistir e listar (ou buscar) dados de ocorrências policiais.
 
 ## Executando
 ### Para executar o backend desse projeto (este repositório), é necessário possuir o Docker Desktop instalado no seu computador
@@ -34,3 +34,4 @@ URL | Método | Descrição
 /ocorrencias | GET | Recurso de listagem de ocorrência, lista todos as ocorrências registradas.
 
 
+Para acessar o frontend desse projeto, acesse este [repositório](https://github.com/marysclair/Projeto-1-BANCO-II)
