@@ -16,7 +16,16 @@
 ```
 git clone https://github.com/gabs44/projeto1-bdII.git
 ```
-3. Por fim, execute os seguintes comandos no terminal. Certifique-se de que o Docker Desktop está em execução.
+3. Crie seu arquivo `.env` na raiz do projeto com o seguinte formato
+```
+PG_DATABASE = 
+PG_USER = 
+PG_PASSWORD = 
+PG_HOST = 
+PG_PORT = 
+```
+
+4. Por fim, execute os seguintes comandos no terminal. Certifique-se de que o Docker Desktop está em execução.
 
 ```
 cd env
