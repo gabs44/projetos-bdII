@@ -9,6 +9,11 @@ type Params = {
   id: string
 }
 
+type ParamsAtu = {
+  id: string
+  titulo: string
+}
+
 export default {
   listar: async function():Promise<IOcorrencia[]>{
     try{
@@ -37,6 +42,20 @@ export default {
       }
       throw new Error('Algo deu errado')
     
+  },
+  atualizar: async({id, titulo} : ParamsAtu)=>{
+    try{
+      const ocorrenciaExiste = await Ocorrencia.find({id})
+      if (!ocorrenciaExiste) {
+        throw new OcorrenciaError('Ocorrencia não existe');
+      }
+      const atualizarOcorrencia = await Ocorrencia.findByIdAndUpdate(
+        id, {titulo}, {new: true})
+      return atualizarOcorrencia
+    }catch(err){
+      console.log(err)
+      throw new Error()
+    }
   },
   deletar: async({id} : Params)=>{
     try{
