@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
-
 import servicoOcorrencia from '../service/servicoOcorrencia';
+import {TipoOcorrencia} from '../model/Ocorrencia'
+import INovaOcorrencia from "../interfaces/INovaOcorrencia";
 
 export default {
   listar: async function (req: Request, res: Response) {
@@ -18,9 +19,13 @@ export default {
   },
   atualizar: async function(req: Request, res: Response) {
     const {id} = req.params
-    const {titulo} = req.body;
+    const dadosOcorrencia:INovaOcorrencia = {id, ...req.body}
+
+    if (!Object.values(TipoOcorrencia).includes(dadosOcorrencia.tipo) && !!dadosOcorrencia.tipo) {
+      return res.status(400).json({ error: "Tipo de ocorrência inválido" });
+    }
     try{
-      const ocorrencia= await servicoOcorrencia.atualizar({id, titulo})
+      const ocorrencia= await servicoOcorrencia.atualizar(dadosOcorrencia)
       res.status(200).json(ocorrencia)
     }catch(error: unknown){
       res.status(404).json({error: "ocorrencia não encontrada"})

@@ -1,15 +1,21 @@
 import {mongoose} from '../database/mongoose'
 const {Schema} = mongoose;
 
+export enum TipoOcorrencia {
+  ASSALTO = 'Assalto',
+  FURTO = 'Furto',
+  OUTROS = 'Outros',
+}
+
 const ocorrenciaSchema = new Schema({
     titulo: String,
     descricao: String,
     data: Date,
     hora: String,
     tipo: {
-        type: String,
-        enum: ['Assalto', 'Furto', 'Outros'],
-        default:  'Assalto' 
+      type: String,
+      enum: Object.values(TipoOcorrencia),
+      default: TipoOcorrencia.ASSALTO,
     },
     localizacaoGeografica: {
         type: {
