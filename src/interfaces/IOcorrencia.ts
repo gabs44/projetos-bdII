@@ -1,8 +1,9 @@
 import { UUID } from "crypto";
 import { Point } from "geojson";
+import { ObjectId } from "mongodb";
 
 interface IOcorrencia {
-  id: UUID,
+  _id: ObjectId,
   titulo: string,
   tipo: string;
   data: Date;

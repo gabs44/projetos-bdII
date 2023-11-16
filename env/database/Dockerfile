@@ -1,4 +1,0 @@
-FROM postgis/postgis
-ENV POSTGRES_DB projeto01
-ENV POSTGRES_USER postgis
-ENV POSTGRES_PASSWORD postgis

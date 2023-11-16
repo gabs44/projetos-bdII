@@ -1,13 +1,18 @@
 import { UUID, randomUUID } from 'crypto';
-import Ocorrencia from '../model/Ocorrencia';
+import {Ocorrencia} from '../model/Ocorrencia';
 import { Point } from 'geojson';
 import IOcorrencia from '../interfaces/IOcorrencia';
 import INovaOcorrencia from '../interfaces/INovaOcorrencia';
+import { OcorrenciaError } from "../utils/erros";
+
+type Params = {
+  id: string
+}
 
 export default {
   listar: async function():Promise<IOcorrencia[]>{
     try{
-      const ocorrencias:IOcorrencia[] = await Ocorrencia.findAll() 
+      const ocorrencias:IOcorrencia[] = await Ocorrencia.find() 
       return ocorrencias;
     } catch (err){
         console.log(err)
@@ -20,21 +25,29 @@ export default {
         type: "Point",
         coordinates: localizacaoGeografica
       }
-      const novoId: UUID = randomUUID()
-      const ocorrencia = Ocorrencia.build({
-        id: novoId,
+      const ocorrencia = await Ocorrencia.create({
         titulo: novaOcorrencia.titulo,
         tipo: novaOcorrencia.tipo,
         data: novaOcorrencia.data,
         hora: novaOcorrencia.hora,
         localizacaoGeografica: ponto
-
       })
-      await ocorrencia.save()
       if(ocorrencia){
         return ocorrencia;
       }
       throw new Error('Algo deu errado')
     
+  },
+  deletar: async({id} : Params)=>{
+    try{
+      const ocorrenciaExiste = await Ocorrencia.find({id})
+      if (!ocorrenciaExiste) {
+        throw new OcorrenciaError('Ocorrencia não existe');
+      }
+        const deleteOcorrencia = await Ocorrencia.findByIdAndDelete(id)
+      return deleteOcorrencia
+    }catch(err){
+      throw err
+    }
   }
 }

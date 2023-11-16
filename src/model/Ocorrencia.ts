@@ -1,54 +1,27 @@
-import { UUID } from "crypto";
-import sequelize from "../database/sequelize";
-import { DataTypes, Model } from "sequelize";
-import { Point } from "geojson";
-import IOcorrencia from "../interfaces/IOcorrencia";
+import {mongoose} from '../database/mongoose'
+const {Schema} = mongoose;
 
-
-class Ocorrencia extends Model implements IOcorrencia {
-  declare titulo: string;
-  declare id: UUID;
-  declare tipo: string;
-  declare data: Date;
-  declare hora: string;
-  declare localizacaoGeografica: Point;
-}
-
-Ocorrencia.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-    },
-    titulo: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+const ocorrenciaSchema = new Schema({
+    titulo: String,
+    descricao: String,
+    data: Date,
+    hora: String,
     tipo: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: String,
+        enum: ['Assalto', 'Furto', 'Outros'],
+        default:  'Assalto' 
     },
-    data: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    hora:{
-      type: DataTypes.STRING,
-      allowNull:false
-    },
-    localizacaoGeografica:{
-      type: DataTypes.GEOMETRY('POINT'),
-      allowNull: false
-    }
-  },
-  {
-    tableName: 'ocorrencias',
-    sequelize, // passing the `sequelize` instance is required
-  },
-);
+    localizacaoGeografica: {
+        type: {
+          type: String,
+          enum: ['Point'], 
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
+});
 
-
-(async () => {
-  await sequelize.sync();
-})();
-export default Ocorrencia;
+export const Ocorrencia = mongoose.model('Ocorrência', ocorrenciaSchema);
