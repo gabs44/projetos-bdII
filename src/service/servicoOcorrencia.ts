@@ -11,7 +11,8 @@ type Params = {
 export default {
   listar: async function (): Promise<IOcorrencia[]> {
     try {
-      const ocorrencias: IOcorrencia[] = await Ocorrencia.find();
+      const ocorrencias: IOcorrencia[] = await Ocorrencia.find({}).sort({data: -1});
+      console.log(ocorrencias)
       return ocorrencias;
     } catch (err) {
       console.log(err);
