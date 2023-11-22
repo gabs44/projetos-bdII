@@ -6,10 +6,17 @@
 
 ### O projeto foi desenvolvido com o objetivo de criar uma aplicação para persistir, listar, atualizar e excluir dados de ocorrências policiais, utilizando MongoDB Atlas e Mongo Charts.
 
-
-#### Para utilizar esse projeto, crie um arquivo ```.env``` com a variável de ambiente no formato abaixo e preencha com a url do seu MongoDB Atlas
+## Executando o projeto
+#### Para executar o projeto, crie um arquivo ```.env``` com a variável de ambiente no formato abaixo e preencha com a url do seu MongoDB Atlas
 ```
 MONGO_URL = 
+```
+
+#### Execute os seguintes comandos no terminal para baixar as dependências e executar a API em modo de desenvolvimento
+
+```
+npm install
+npm run dev
 ```
 
 ## Documentação
