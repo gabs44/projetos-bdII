@@ -15,6 +15,7 @@ export async function getDriver(){
     const serverInfo = await driver.getServerInfo();
     console.log('Conectado com o Neo4j');
     console.log(serverInfo);
+    return driver
   } catch (err : unknown) {
     if(err instanceof Neo4jError){
       console.log(`Erro de conexão\n${err}\nCausa: ${err.message}`);
@@ -23,6 +24,6 @@ export async function getDriver(){
     } else {
       console.error(`Erro desconhecido\n${err}`);
     }
+    throw err
   }
-  return driver
 };
