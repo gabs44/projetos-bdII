@@ -1,6 +1,7 @@
 import {mongoose} from '../database/mongoose'
 const {Schema} = mongoose;
 
+
 export enum TipoOcorrencia {
   ASSALTO = 'Assalto',
   FURTO = 'Furto',
