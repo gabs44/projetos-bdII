@@ -8,6 +8,7 @@ import { extrairHorasPrimeirosDoisValores } from "../utils/formatarHorario";
 
 type Params = {
   id: string;
+  horario?: string
 };
 
 async function inserirOcorrenciaNeo4j(horario: string , ocorrenciaId: string){
@@ -25,8 +26,40 @@ async function inserirOcorrenciaNeo4j(horario: string , ocorrenciaId: string){
     return resultadoOcorrencia
 }
 
+async function filtrarOcorrenciaNeo4j(horario: string) {
+  const driver = await getDriver()
+  let resultadoOcorrencias = await driver.executeQuery(
+    `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario)
+    WHERE h.startTime = ${horario}
+    RETURN o.ocorrenciaId as ocorrenciaId
+    `,
+    {},
+    { database: 'neo4j' }
+  )
+  const ocorrencias = resultadoOcorrencias.records.map(record => {
+    return record.get('ocorrenciaId');
+  });
+return ocorrencias
+}
+
+async function removerOcorrenciaNeo4j(horario: string, ocorrenciaId: string) {
+  const driver = await getDriver()
+  const horas = extrairHorasPrimeirosDoisValores(horario)
+      let resultadoOcorrencia = await driver.executeQuery(
+          `MATCH (o:Ocorrencia {ocorrenciaId: "${ocorrenciaId}"})-[r:OCORREU_EM]-> (h:Horario {startTime: '${horas}'})
+          DELETE r, o
+          `,
+          {},
+          { database: 'neo4j' }
+        )
+      return resultadoOcorrencia
+}
+
 export default {
-  listar: async function (): Promise<IOcorrencia[]> {
+  listar: async function (horario?: string): Promise<IOcorrencia[]> {
+    if(horario){
+      return await this.filtrar(horario)
+    }
     try {
       const ocorrencias: IOcorrencia[] = await Ocorrencia.find({}).sort({data: -1});
       console.log(ocorrencias)
@@ -50,7 +83,7 @@ export default {
       localizacaoGeografica: ponto,
     });
     if (ocorrencia) {
-      inserirOcorrenciaNeo4j(ocorrencia.hora, ocorrencia.id)
+      await inserirOcorrenciaNeo4j(ocorrencia.hora, ocorrencia.id)
       return ocorrencia;
     }
     throw new Error("Algo deu errado");
@@ -90,9 +123,23 @@ export default {
         throw new OcorrenciaError("Ocorrencia não existe");
       }
       const deleteOcorrencia = await Ocorrencia.findByIdAndDelete(id);
+      await removerOcorrenciaNeo4j(deleteOcorrencia.hora, deleteOcorrencia.id)
       return deleteOcorrencia;
     } catch (err) {
       throw err;
     }
-  },
+  }, filtrar: async(horario: string ) =>{
+      try {
+        const ocorrenciasFiltradas = await filtrarOcorrenciaNeo4j(horario as string)
+        const ocorrencias: IOcorrencia[] = []
+        ocorrenciasFiltradas.forEach(async element => {
+          const busca = await Ocorrencia.find({id: element})
+          ocorrencias.push(busca)
+        });
+        return ocorrencias
+      } catch (error) {
+        return []
+      }
+
+  }
 };

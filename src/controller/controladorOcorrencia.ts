@@ -5,7 +5,8 @@ import INovaOcorrencia from "../interfaces/INovaOcorrencia";
 
 export default {
   listar: async function (req: Request, res: Response) {
-    const ocorrencias = await servicoOcorrencia.listar();
+    const horario = req.query.horario as string
+    const ocorrencias = await servicoOcorrencia.listar(horario);
     res.json(ocorrencias)
   },
   criar: async function(req: Request, res: Response){
