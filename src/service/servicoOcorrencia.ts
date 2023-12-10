@@ -28,9 +28,10 @@ async function inserirOcorrenciaNeo4j(horario: string , ocorrenciaId: string){
 
 async function filtrarOcorrenciaNeo4j(horario: string) {
   const driver = await getDriver()
+  const horas = extrairHorasPrimeirosDoisValores(horario)
   let resultadoOcorrencias = await driver.executeQuery(
     `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario)
-    WHERE h.startTime = ${horario}
+    WHERE h.startTime = '${horas}'
     RETURN o.ocorrenciaId as ocorrenciaId
     `,
     {},
@@ -130,13 +131,16 @@ export default {
     }
   }, filtrar: async(horario: string ) =>{
       try {
-        const ocorrenciasFiltradas = await filtrarOcorrenciaNeo4j(horario as string)
-        const ocorrencias: IOcorrencia[] = []
-        ocorrenciasFiltradas.forEach(async element => {
-          const busca = await Ocorrencia.find({id: element})
-          ocorrencias.push(busca)
-        });
-        return ocorrencias
+        const ocorrenciasFiltradas = await filtrarOcorrenciaNeo4j(horario as string);
+
+        const ocorrencias = await Promise.all(
+          ocorrenciasFiltradas.map(async (element) => {
+            const busca = await Ocorrencia.findOne({ _id: element });
+            return busca;
+          })
+        );
+        
+        return ocorrencias;
       } catch (error) {
         return []
       }
