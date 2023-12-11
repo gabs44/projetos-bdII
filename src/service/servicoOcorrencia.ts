@@ -29,24 +29,17 @@ async function inserirOcorrenciaNeo4j(horario: string , ocorrenciaId: string, ti
 async function filtrarOcorrenciaNeo4j(horario: string, tipo?: string) {
   const driver = await getDriver()
   const horas = extrairHorasPrimeirosDoisValores(horario)
+  const query = tipo ? `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario {startTime: '${horario}'})
+  WHERE EXISTS((o)-[:OCORREU_EM {tipo: '${tipo}'}]->(h))
+  RETURN o.ocorrenciaId as ocorrenciaId` :  `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario)
+  WHERE h.startTime = '${horas}'
+  RETURN o.ocorrenciaId as ocorrenciaId`
   let resultadoOcorrencias = await driver.executeQuery(
-    `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario)
-    WHERE h.startTime = '${horas}'
-    RETURN o.ocorrenciaId as ocorrenciaId
-    `,
+    query,
     {},
     { database: 'neo4j' }
-  )
-  if(tipo){
-    resultadoOcorrencias = await driver.executeQuery(
-      `MATCH (o:Ocorrencia)-[:OCORREU_EM]->(h:Horario {startTime: '${horario}'})
-      WHERE EXISTS((o)-[:OCORREU_EM {tipo: '${tipo}'}]->(h))
-      RETURN o`,
-      {},
-      { database: 'neo4j' }
-    )
-  }
-  const ocorrencias = resultadoOcorrencias.records.map(record => {
+  ) 
+    const ocorrencias = resultadoOcorrencias.records.map(record => {
     return record.get('ocorrenciaId');
   });
 return ocorrencias
