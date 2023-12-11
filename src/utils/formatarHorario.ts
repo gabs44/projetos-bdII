@@ -1,5 +1,6 @@
 export function extrairHorasPrimeirosDoisValores(horaString: string) {
   const regex = /^(\d{1,2}):/;
+  console.log(horaString)
   const match = horaString.match(regex);
 
   if (match && match.length > 1) {

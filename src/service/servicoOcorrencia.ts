@@ -65,9 +65,10 @@ async function removerOcorrenciaNeo4j(horario: string, ocorrenciaId: string) {
       return resultadoOcorrencia
 }
 
-async function atualizarRelacionamentoNeo4j(horario: string, ocorrenciaId: string, tipo: string){
+async function atualizarRelacionamentoNeo4j(novoHorario: string, velhorHorario: string, ocorrenciaId: string, tipo: string){
   const driver = await getDriver()
-  const horas = extrairHorasPrimeirosDoisValores(horario)
+  const horas = extrairHorasPrimeirosDoisValores(velhorHorario)
+  const novasHoras = extrairHorasPrimeirosDoisValores(novoHorario)
   await driver.executeQuery(
       `MATCH (o:Ocorrencia {ocorrenciaId: "${ocorrenciaId}"})-[r:OCORREU_EM]-> (h:Horario {startTime: '${horas}'})
       DELETE r
@@ -76,14 +77,14 @@ async function atualizarRelacionamentoNeo4j(horario: string, ocorrenciaId: strin
       { database: 'neo4j' }
     )
   await driver.executeQuery(
-      `MATCH (a:Ocorrencia {ocorrenciaId: '${ocorrenciaId}'})-[rel:OCORREU_EM]->(b:Horario {startTime: '${horario}'})
-      SET rel.tipo = '${tipo}'      
-      `,
+    `MATCH (o:Ocorrencia {ocorrenciaId: '${ocorrenciaId}'}), (h:Horario {startTime: '${novasHoras}'})
+    CREATE (o)-[:OCORREU_EM {tipo: '${tipo}}'}]->(h)
+    `,
       {},
       { database: 'neo4j' }
     )
-}
 
+}
 export default {
   listar: async function (horario?: string, tipo?: string): Promise<IOcorrencia[]> {
     if(horario){
@@ -94,7 +95,6 @@ export default {
     }
     try {
       const ocorrencias: IOcorrencia[] = await Ocorrencia.find({}).sort({data: -1});
-      console.log(ocorrencias)
       return ocorrencias;
     } catch (err) {
       console.log(err);
@@ -129,7 +129,7 @@ export default {
     localizacaoGeografica,
   }: INovaOcorrencia) => {
     try {
-      const ocorrenciaExiste = await Ocorrencia.find({ id });
+      const ocorrenciaExiste = await Ocorrencia.find({ _id: id });
       if (!ocorrenciaExiste) {
         throw new OcorrenciaError("Ocorrencia não existe");
       }
@@ -142,6 +142,7 @@ export default {
         { titulo, tipo, data, hora, localizacaoGeografica:ponto },
         { new: true }
       );
+      await atualizarRelacionamentoNeo4j(atualizarOcorrencia.hora, ocorrenciaExiste[0].hora, atualizarOcorrencia.id, atualizarOcorrencia.tipo)
       return atualizarOcorrencia;
     } catch (err) {
       console.log(err);
