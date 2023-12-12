@@ -2,9 +2,9 @@
 ## Grupo
 - [Gabriella Braga](https://github.com/gabs44)
 - [Maria Clara](https://github.com/marysclair)
-## Segundo projeto
+## Terceiro projeto
 
-### O projeto foi desenvolvido com o objetivo de criar uma aplicação para persistir, listar, atualizar e excluir dados de ocorrências policiais, utilizando MongoDB Atlas e Mongo Charts Além disso, utiliza o aura em conjunto com o neo4j como banco de grafos para manter os relacionamentos de horários das ocorrências e seus tipos .
+### O projeto foi desenvolvido com o objetivo de criar uma aplicação para persistir, listar, atualizar e excluir dados de ocorrências policiais, utilizando MongoDB Atlas e Mongo Charts Além disso, utiliza o aura em conjunto com o neo4j como banco de grafos para manter os relacionamentos de horários das ocorrências e seus tipos.
 
 ## Executando o projeto
 #### Para executar o projeto, crie um arquivo ```.env``` com as variáveis de ambiente do MongoDB Atlas e Neo4j no formato abaixo
